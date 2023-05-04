@@ -15,17 +15,16 @@
         const vm = Vue.createApp({
             data() {
                 return {
-                    text: "Un texto a mostrar"
+                    text: "It was updated"
                 };
             },
             methods: {
                 wasAChange(event){
-                    console.log(event)
+                    console.log(event.input.value)
                 }
             },
             template:`
             <p> {{ text }}</p>
-            <p>Otro texto</p>
             <input type="text" v-on:change="wasAChange"/>
             `
         }).mount("#app");
