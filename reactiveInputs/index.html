@@ -18,15 +18,45 @@
                     text: "It was updated"
                 };
             },
-            methods: {
+            /* methods: {
                 wasAChange(event){
-                    console.log(event.input.value)
+                    this.text= event.target.value
                 }
-            },
+            }, */
+           /*  template:`
+                <p> {{ text }}</p>
+                <input 
+                    type="text" 
+                    v-on:input="wasAChange" @ for events
+                    v-bind:value="text"     : for atributos
+                /> 
+            `   */ 
+           /*  template:`
+                <p> {{ text }}</p>
+                <input 
+                    type="text" 
+                    @input="wasAChange"
+                    :value="text" 
+                /> 
+            `     */               /* 🔝Aquí con v-bind ya estamos previsualizando
+                                    el elemento que se va a establecer para el 
+                                    input. */
+
             template:`
-            <p> {{ text }}</p>
-            <input type="text" v-on:change="wasAChange"/>
-            `
+                <p> {{ text }}</p>
+                <input 
+                    type="text" 
+                    v-model="text"
+                /> 
+            `   
+            /*
+            dentro de los métodos que podemos usar para reflejar
+            el cambio tenemos
+            change (cambio una vez que selecciona otra área.)
+            input (cambio en tiempo real)
+            
+            todo esto debido a que vue.js es reactivo en todo momento
+            */
         }).mount("#app");
     </script>
 </body>
