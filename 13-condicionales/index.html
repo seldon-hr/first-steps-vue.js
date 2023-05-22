@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <div id="app"></div>
+    <style>
+        html, body {
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #app, .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+        button {
+            margin-top: 24px;
+            border: none;
+            background-color: white;
+            padding: 8px 24px;
+            border-radius: 12px;
+        }
+        .closed {
+            background-color: #eca1a6;
+        }
+        .open {
+            background-color: #b5e7a0;
+        }
+    </style>
+    <script>
+        const vm = Vue.createApp({
+            data() {
+                return {
+                    text: "Log in the system",
+                    open: false,
+                    username: "",
+                };
+            },
+            watch: {
+                open(status){
+                    if (status == true) {
+                        this.text = "Log out";
+                    } else {
+                        this.text = "Log in";
+                        /* RESET THE USERNAME FIELD */
+                        this.username = "";
+                    }
+
+               }
+                
+            },
+            computed: {
+                label() {
+                    return this.open ? "Exit" : "Access";
+                },
+                styles() {
+                    return this.open ? ['open'] :'closed';
+                }
+                /* used a computed to choose the have a class in the component and change the class of the component */
+            },
+            /* :style="styles" */
+            template: `
+            <div class="container":class="styles">
+                <h2> {{ text }}</h2>
+                <div v-if="open">
+                        <p>Hey, {{ username }}</p>
+                </div>
+                <div v-else=>
+                    <label>Username: </label>
+                    <input type="text" v-model="username"></input>
+                </div>
+                <br>
+                <button @click="open = !open">
+                        <div v-if="!open" >Access</div>
+                        <div v-else>Get out</div>
+                    </button>
+            </div>
+            `
+        }).mount("#app");
+    </script>
+</body>
+</html>
