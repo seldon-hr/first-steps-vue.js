@@ -13,26 +13,40 @@
         const vm = Vue.createApp({
             data() {
                 return {
-                    text: "Puerta cerrada",
+                    text: "The door is closed",
                     open: false
                 };
             },
             watch: {
-                open(value) {
-                    if (value) {
-                        this.text = "Puerta abierta";
-                    } else {
-                        this.text = "Puerta cerrada";
-                    }
+                open(status){
+                    status == true ? this.text="The door was opened" : this.text="The door was closed";
                 }
+                /* ? Here with the watchers could set a new value for a propertie was defined previously in the data.
+                    Our example is about a label with a button, both have a behavior that say when you click the button
+                    the text must to change  with the next text: 'The door was opened' due to, we simulate to open a door while pushing
+                    the button, likewise, the label have to change again if we made click anew. 
+                    How work this?
+                    We define a variable called 'text', this have a default text it appears when you load the system.
+                    then, a variable called open, have a boolean set default value as 'false', indicate the door is closed.
+                    here, is when we need to have something, check if the value change, 'a watcher', for that the watcher is will called with the same name as 'open variable'
+                    this have set the value as other, so if the value changed, (this will happen to press a button) the watcher will set the variable called 'text' with a new text.
+                    The same way, we use a computed propertie, for return a new valeu to the text will looks in the button.
+                    And finally this behaviour is setted in a click event, and every the button was clicked this will send a value to the open variable.
+
+                    the conditional is the next:
+                    open = !open,
+                    esto significa que el nuevo valor de open va ser negado, si open era true, ! lo va a negar y va a asginar a open 'false'.
+                
+                */
             },
             computed: {
                 label() {
-                    return this.open ? "Cerrar" : "Abrir";
+                    return this.open ? "Close" : "Open";
                 }
             },
             template: `
-                <div>{{ text }}</div>
+                <div> {{ text }}</div>
+                <br>
                 <button @click="open = !open">{{ label }}</button>
             `
         }).mount("#app");
