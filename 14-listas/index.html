@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listas</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <div id="app"></div>
+    <style>
+        html, body {
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #app, .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+        button {
+            margin-top: 24px;
+            border: none;
+            background-color: white;
+            padding: 8px 24px;
+            border-radius: 12px;
+        }
+        .closed {
+            background-color: #000000;
+        }
+        .open {
+            background-color: #000000;
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgb(113, 118, 123);
+            padding: 5px;
+            color: white;
+            /* border-radius: 30px; */
+            /* margin-bottom: 10px; */
+        }
+
+        /* .item > div {
+            flex-direction: row;
+            display: inline-block;
+        } */
+
+        .title {
+            display: inline-block;
+            font-weight: 500 ;
+            color: white;
+            padding: 15px 5px 5px 5px;
+        }
+
+        .gray-text {
+            display: inline-block;
+            padding-bottom: 5px;
+            font-size: small;
+            color: rgb(113, 118, 123);
+        }
+
+        .description {
+            padding: 0px 5px 5px 10px;
+        }
+    </style>
+    <script>
+        const vm = Vue.createApp({
+            data() {
+                return {
+                    text: "Log in the system",
+                    open: false,
+                    username: "",
+                    posts: [
+                        {
+                        "name": "Oppenheimer",
+                        "description": "El triunfo y la tragedia de J. Robert Oppenheimer Prometeo Americano",
+                        "username": "oppenheimer_user",
+                        "time": "2023-06-15 10:30"
+                        },
+                        {
+                        "name": "Einstein",
+                        "description": "El increíble viaje de Albert Einstein en busca del conocimiento universal",
+                        "username": "einstein_user",
+                        "time": "2023-06-15 11:15"
+                        },
+                        {
+                        "name": "Newton",
+                        "description": "Descubre cómo Isaac Newton revolucionó nuestra comprensión de la fuerza de la gravedad",
+                        "username": "newton_user",
+                        "time": "2023-06-15 12:00"
+                        },
+                        {
+                        "name": "Marie Curie",
+                        "description": "La extraordinaria historia de Marie Curie y su lucha por la igualdad de género en la ciencia",
+                        "username": "curie_user",
+                        "time": "2023-06-15 13:45"
+                        },
+                        {
+                        "name": "Hawking",
+                        "description": "El fascinante viaje de Stephen Hawking a través de los misterios del cosmos",
+                        "username": "hawking_user",
+                        "time": "2023-06-15 14:30"
+                        },
+                        {
+                        "name": "Tesla",
+                        "description": "Nikola Tesla y su impacto en el desarrollo de la tecnología eléctrica moderna",
+                        "username": "tesla_user",
+                        "time": "2023-06-15 15:15"
+                        }
+                     ]
+
+                };
+            },
+            watch: {
+                open(status){
+                    if (status == true) {
+                        this.text = "Log out";
+                    } else {
+                        this.text = "Log in";
+                        /* RESET THE USERNAME FIELD */
+                        this.username = "";
+                    }
+
+               }
+                
+            },
+            computed: {
+                label() {
+                    return this.open ? "Exit" : "Access";
+                },
+                styles() {
+                    return this.open ? ['open'] :'closed';
+                }
+                /* used a computed to choose the have a class in the component and change the class of the component */
+            },
+            /* :style="styles" */
+            template: `
+            <div class="container":class="styles">
+                <h2> {{ text }}</h2>
+                <div v-if="open">
+                        <p>Hey, {{ username }}</p>
+                        <div class="list">      
+                            <!--Aquí estamos renderizando una lista de elementos con una directive
+                                  v-for, así pasamos un array, pero para saber cual es cual 
+                                  elemento,  estamos usando un identificador (i), el cual nos ayudará
+                                  a saber que elemento es cada uno, permitiendo elminar por este identificador
+                                  -->
+                            <div class="item"  v-for="(item, i) in posts" :key="i">
+                                <div>
+                                    <div class="title"> {{ item.name }}</div>
+                                    <div class="gray-text">
+                                        <span> {{ item.username }}</span>
+                                        <span> · {{ item.time }}</span>
+                                    </div>
+                                </div>
+                                <div class="description">
+                                    <p> {{ item.description }} </p>
+                                </div>
+                            </div>    
+                        </div>
+                </div>
+                <div v-else >
+                    <div>Username: </div>
+                    <input type="text" v-model="username"></input>
+                </div>
+                <br>
+                <button @click="open = !open">
+                        <div v-if="!open" >Access</div>
+                        <div v-else>Get out</div>
+                    </button>
+            </div>
+            `
+        }).mount("#app");
+    </script>
+</body>
+</html>
