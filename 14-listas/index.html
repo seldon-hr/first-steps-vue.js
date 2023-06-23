@@ -6,9 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listas</title>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+
+
 </head>
 <body>
     <script src="https://unpkg.com/vue@next"></script>
+<!-- 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script> -->
     <div id="app"></div>
     <style>
         html, body {
@@ -49,6 +60,7 @@
             border: 1px solid rgb(113, 118, 123);
             padding: 5px;
             color: white;
+
             /* border-radius: 30px; */
             /* margin-bottom: 10px; */
         }
@@ -75,6 +87,57 @@
         .description {
             padding: 0px 5px 5px 10px;
         }
+
+        .twitter {
+            height: 60px;
+            width: 60px;
+            display: flex;
+            position:fixed;
+            background-color: #1D9BF0;
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            right: 5vw;
+            bottom: 5vh;
+            
+        }
+
+        .twitter span {
+            font-size: xx-large;
+            color: white;
+        }
+
+        .text-square {
+            display: grid;
+            position: absolute;
+            width: 600px;
+            height: 250px;
+            padding-left: 16px;
+            padding-right: 16px;
+            background-color: #2b2525;
+            top: 5vh;
+            border-radius: 25px;
+        }
+
+        .text_tweet {
+            width: 200px;
+            height: 50px;
+            margin: 30px 0 0 20px;
+            padding-left: 5px;
+            color: white;
+            outline: 0;
+        }
+
+        .tweet_btn {
+            width: 90px;
+            height: 40px;
+            background-color: #1D9BF0;
+            color: white;
+            font-weight: 700;
+            position: absolute;
+            right: 20px;
+            top: -8px;
+        }
     </style>
     <script>
         const vm = Vue.createApp({
@@ -83,6 +146,7 @@
                     text: "Log in the system",
                     open: false,
                     username: "",
+                    isTweeting: false,
                     posts: [
                         {
                         "name": "Oppenheimer",
@@ -124,6 +188,13 @@
 
                 };
             },
+
+            methods: {
+                tweetSomething(){
+                    this.isTweeting = true;
+                    console.log('clck');
+                }
+            },
             watch: {
                 open(status){
                     if (status == true) {
@@ -148,7 +219,7 @@
             },
             /* :style="styles" */
             template: `
-            <div class="container":class="styles">
+            <div class="container" :class="styles">
                 <h2> {{ text }}</h2>
                 <div v-if="open">
                         <p>Hey, {{ username }}</p>
@@ -174,14 +245,26 @@
                 </div>
                 <div v-else >
                     <div>Username: </div>
-                    <input type="text" v-model="username"></input>
+                    <input type="text" v-model="username">
                 </div>
                 <br>
                 <button @click="open = !open">
                         <div v-if="!open" >Access</div>
                         <div v-else>Get out</div>
                     </button>
+
+                    <button class="twitter">
+                        <span class="mdi mdi-pen"></span>
+                    </button>
             </div>
+            <div class="text-square" v-if="isTweeting">
+
+                <div>
+                    <input class="text_tweet"  type="text" placeholder="What's happening?">
+                </div>
+                <button class="tweet_btn" @click="tweetSomething()">Tweet</button>
+            </div>
+           
             `
         }).mount("#app");
     </script>
