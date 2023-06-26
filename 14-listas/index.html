@@ -34,6 +34,7 @@
             flex-direction: column;
             width: 100%;
             height: 100%;
+            color: white;
         }
         button {
             margin-top: 24px;
@@ -43,7 +44,7 @@
             border-radius: 12px;
         }
         .closed {
-            background-color: #000000;
+            background-color: rgb(84, 78, 78);
         }
         .open {
             background-color: #000000;
@@ -57,12 +58,17 @@
         .item {
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
             border: 1px solid rgb(113, 118, 123);
             padding: 5px;
             color: white;
 
             /* border-radius: 30px; */
             /* margin-bottom: 10px; */
+        }
+
+        .item-content {
+            flex:1;
         }
 
         /* .item > div {
@@ -82,6 +88,16 @@
             padding-bottom: 5px;
             font-size: small;
             color: rgb(113, 118, 123);
+        }
+
+        .x-mark {
+            margin-left: auto;
+            cursor: pointer;
+        }
+
+        .x-mark:hover {
+            background-color: rgba(128, 128, 128, 0.345);
+            border-radius: 50%;
         }
 
         .description {
@@ -120,8 +136,8 @@
         }
 
         .text_tweet {
-            width: 200px;
-            height: 50px;
+            width: 450px;
+            height: 200px;
             margin: 30px 0 0 20px;
             padding-left: 5px;
             color: white;
@@ -197,18 +213,22 @@
             methods: {
                 tweetSomething(){
                     this.isTweeting = true;
-                    console.log('clck');    
                 },
 
                 newTweet(){
                     this.posts.push({
-                        name: "seldon",
+                        name: this.username,
                         description: this.tweet,
                         username: this.username,
                         time: this.getLocalTime(),
                     });
                     this.isTweeting = false;
+                    this.tweet = "";
 
+                },
+
+                removeTweet(val){
+                    this.posts.splice(val, 1);
                 },
 
                 getLocalTime() {
@@ -220,7 +240,6 @@
                     const hours = date.getHours();
                     const minutes = date.getMinutes();
                     const fullTime = `${year}-${month}-${day} ${hours}:${minutes}`  
-                    console.log(fullTime);
                     return fullTime;
                 }
             },
@@ -259,12 +278,13 @@
                                   a saber que elemento es cada uno, permitiendo elminar por este identificador
                                   -->
                             <div class="item"  v-for="(item, i) in posts" :key="i">
-                                <div>
+                                <div class="item-content">
                                     <div class="title"> {{ item.name }}</div>
                                     <div class="gray-text">
                                         <span> {{ item.username }}</span>
                                         <span> · {{ item.time }}</span>
                                     </div>
+                                    <span class="mdi mdi-alpha-x x-mark" @click="removeTweet(i)"></span>
                                 </div>
                                 <div class="description">
                                     <p> {{ item.description }} </p>
@@ -289,7 +309,7 @@
             <div class="text-square" v-if="isTweeting">
 
                 <div>
-                    <input v-model="tweet" class="text_tweet"  type="text" placeholder="What's happening?">
+                    <textarea v-model="tweet" class="text_tweet"  placeholder="What's happening?"></textarea>
                 </div>
                 <button class="tweet_btn" @click="newTweet()">Tweet</button>
             </div>
