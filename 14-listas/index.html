@@ -147,6 +147,7 @@
                     open: false,
                     username: "",
                     isTweeting: false,
+                    tweet: "",
                     posts: [
                         {
                         "name": "Oppenheimer",
@@ -189,10 +190,38 @@
                 };
             },
 
+            created() {
+                this.getLocalTime();
+            },
+
             methods: {
                 tweetSomething(){
                     this.isTweeting = true;
-                    console.log('clck');
+                    console.log('clck');    
+                },
+
+                newTweet(){
+                    this.posts.push({
+                        name: "seldon",
+                        description: this.tweet,
+                        username: this.username,
+                        time: this.getLocalTime(),
+                    });
+                    this.isTweeting = false;
+
+                },
+
+                getLocalTime() {
+                    const date = new Date();
+                    const year = date.getFullYear();
+                    let month = date.getMonth() + 1;
+                    month = month < 10 ? '0' + month : month;
+                    const day = date.getDate();
+                    const hours = date.getHours();
+                    const minutes = date.getMinutes();
+                    const fullTime = `${year}-${month}-${day} ${hours}:${minutes}`  
+                    console.log(fullTime);
+                    return fullTime;
                 }
             },
             watch: {
@@ -254,15 +283,15 @@
                     </button>
 
                     <button class="twitter">
-                        <span class="mdi mdi-pen"></span>
+                        <span class="mdi mdi-pen" @click="tweetSomething()"></span>
                     </button>
             </div>
             <div class="text-square" v-if="isTweeting">
 
                 <div>
-                    <input class="text_tweet"  type="text" placeholder="What's happening?">
+                    <input v-model="tweet" class="text_tweet"  type="text" placeholder="What's happening?">
                 </div>
-                <button class="tweet_btn" @click="tweetSomething()">Tweet</button>
+                <button class="tweet_btn" @click="newTweet()">Tweet</button>
             </div>
            
             `
