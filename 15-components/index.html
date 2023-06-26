@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listas</title>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+
+
+</head>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+<!-- 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script> -->
+    <div id="app"></div>
+    <style>
+        html, body {
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #app, .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            color: white;
+        }
+        button {
+            margin-top: 24px;
+            border: none;
+            background-color: white;
+            padding: 8px 24px;
+            border-radius: 12px;
+        }
+        .closed {
+            background-color: rgb(84, 78, 78);
+        }
+        .open {
+            background-color: #000000;
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid rgb(113, 118, 123);
+            padding: 5px;
+            color: white;
+
+            /* border-radius: 30px; */
+            /* margin-bottom: 10px; */
+        }
+
+        .item-content {
+            flex:1;
+        }
+
+        /* .item > div {
+            flex-direction: row;
+            display: inline-block;
+        } */
+
+        .title {
+            display: inline-block;
+            font-weight: 500 ;
+            color: white;
+            padding: 15px 5px 5px 5px;
+        }
+
+        .gray-text {
+            display: inline-block;
+            padding-bottom: 5px;
+            font-size: small;
+            color: rgb(113, 118, 123);
+        }
+
+        .x-mark {
+            margin-left: auto;
+            cursor: pointer;
+        }
+
+        .x-mark:hover {
+            background-color: rgba(128, 128, 128, 0.345);
+            border-radius: 50%;
+        }
+
+        .description {
+            padding: 0px 5px 5px 10px;
+        }
+
+        .twitter {
+            height: 60px;
+            width: 60px;
+            display: flex;
+            position:fixed;
+            background-color: #1D9BF0;
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            right: 5vw;
+            bottom: 5vh;
+            
+        }
+
+        .twitter span {
+            font-size: xx-large;
+            color: white;
+        }
+
+        .text-square {
+            display: grid;
+            position: absolute;
+            width: 600px;
+            height: 250px;
+            padding-left: 16px;
+            padding-right: 16px;
+            background-color: #2b2525;
+            top: 5vh;
+            border-radius: 25px;
+        }
+
+        .text_tweet {
+            width: 450px;
+            height: 200px;
+            margin: 30px 0 0 20px;
+            padding-left: 5px;
+            color: white;
+            outline: 0;
+        }
+
+        .tweet_btn {
+            width: 90px;
+            height: 40px;
+            background-color: #1D9BF0;
+            color: white;
+            font-weight: 700;
+            position: absolute;
+            right: 20px;
+            top: -8px;
+        }
+    </style>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    text: "Log in the system",
+                    open: false,
+                    username: "",
+                    isTweeting: false,
+                    tweet: "",
+                    posts: [
+                        {
+                        "name": "Oppenheimer",
+                        "description": "El triunfo y la tragedia de J. Robert Oppenheimer Prometeo Americano",
+                        "username": "oppenheimer_user",
+                        "time": "2023-06-15 10:30"
+                        },
+                        {
+                        "name": "Einstein",
+                        "description": "El increíble viaje de Albert Einstein en busca del conocimiento universal",
+                        "username": "einstein_user",
+                        "time": "2023-06-15 11:15"
+                        },
+                        {
+                        "name": "Newton",
+                        "description": "Descubre cómo Isaac Newton revolucionó nuestra comprensión de la fuerza de la gravedad",
+                        "username": "newton_user",
+                        "time": "2023-06-15 12:00"
+                        },
+                        {
+                        "name": "Marie Curie",
+                        "description": "La extraordinaria historia de Marie Curie y su lucha por la igualdad de género en la ciencia",
+                        "username": "curie_user",
+                        "time": "2023-06-15 13:45"
+                        },
+                        {
+                        "name": "Hawking",
+                        "description": "El fascinante viaje de Stephen Hawking a través de los misterios del cosmos",
+                        "username": "hawking_user",
+                        "time": "2023-06-15 14:30"
+                        },
+                        {
+                        "name": "Tesla",
+                        "description": "Nikola Tesla y su impacto en el desarrollo de la tecnología eléctrica moderna",
+                        "username": "tesla_user",
+                        "time": "2023-06-15 15:15"
+                        }
+                     ]
+
+                };
+            },
+
+            created() {
+                this.getLocalTime();
+            },
+
+            methods: {
+                tweetSomething(){
+                    this.isTweeting = true;
+                },
+
+                newTweet(){
+                    this.posts.push({
+                        name: this.username,
+                        description: this.tweet,
+                        username: this.username,
+                        time: this.getLocalTime(),
+                    });
+                    this.isTweeting = false;
+                    this.tweet = "";
+
+                },
+
+                removeTweet(val){
+                    this.posts.splice(val, 1);
+                },
+
+                getLocalTime() {
+                    const date = new Date();
+                    const year = date.getFullYear();
+                    let month = date.getMonth() + 1;
+                    month = month < 10 ? '0' + month : month;
+                    const day = date.getDate();
+                    const hours = date.getHours();
+                    const minutes = date.getMinutes();
+                    const fullTime = `${year}-${month}-${day} ${hours}:${minutes}`  
+                    return fullTime;
+                }
+            },
+            watch: {
+                open(status){
+                    if (status == true) {
+                        this.text = "Log out";
+                    } else {
+                        this.text = "Log in";
+                        /* RESET THE USERNAME FIELD */
+                        this.username = "";
+                    }
+
+               }
+                
+            },
+            computed: {
+                label() {
+                    return this.open ? "Exit" : "Access";
+                },
+                styles() {
+                    return this.open ? ['open'] :'closed';
+                }
+                /* used a computed to choose the have a class in the component and change the class of the component */
+            },
+            /* :style="styles" */
+            template: `
+            <div class="container" :class="styles">
+                <h2> {{ text }}</h2>
+                <div v-if="open">
+                    <p>Hey, {{ username }}</p>
+                    <div class="list">      
+                        <c-tweet-card 
+                            v-for="(item, i) in posts" 
+                            :key="i"
+                            :post="item"
+                        />
+                    </div>
+                </div>
+                <div v-else >
+                    <div>Username: </div>
+                    <input type="text" v-model="username">
+                </div>
+                <br>
+                <button @click="open = !open">
+                    <div v-if="!open" >Access</div>
+                    <div v-else>Get out</div>
+                </button>
+
+                <c-tweet-button
+                    v-if="open"    
+                />
+                    
+            </div>
+            <div class="text-square" v-if="isTweeting">
+
+                <div>
+                    <textarea v-model="tweet" class="text_tweet"  placeholder="What's happening?"></textarea>
+                </div>
+                <button class="tweet_btn" @click="newTweet()">Tweet</button>
+            </div>
+           
+            `
+        })
+
+        app.component('c-tweet-button', {
+            template:`
+            <button class="twitter">
+                <span class="mdi mdi-pen" @click="tweetSomething()"></span>
+            </button>
+            `
+        })
+        
+
+        app.component('c-tweet-card', {
+            props: {
+                /* Dentro de la props creamos propiedades que le podemos
+                   mandar a nuestro componente que estamos creando. */
+                post: { type: String }
+            },
+            template:`
+            <!--
+                Uso de un componente único para hacer uso de como un 'c-tweet-card'
+            -->
+            <div class="item">
+                <div class="item-content">
+                    <div class="title"> {{ post.name }}</div>
+                    <div class="gray-text">
+                        <span> {{ post.username }}</span>
+                        <span> · {{ post.time }}</span>
+                    </div>
+                    <span class="mdi mdi-alpha-x x-mark" @click="removeTweet(i)"></span>
+                </div>
+                <div class="description">
+                    <p> {{ post.description }} </p>
+                </div>
+            </div>    
+            `
+        })
+        
+    const vm = app.mount("#app");
+    </script>
+</body>
+</html>
