@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunication Father-Child</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <div id="app">
+        <script>
+            const app = Vue.createApp({
+
+                data() {
+                    return {
+
+                        items: [
+                            "one",
+                            "two",
+                            "three",
+                        ]
+                    }
+                },
+                template:
+                `
+                <ul>
+                    <v-item v-for="item in items" v-bind:text="item"></v-item>
+                </ul>
+                `
+            });
+            /* 
+                En vez de pasar el elemento de 'item' dentro de el componente de v-item, aquí se esta
+                optando por el uso de su característica v-bind que proporciona vue, que esta se puede escribir
+                como v-bind:text="item" o simplemente :text.
+
+                ¿Qué significa esto?
+
+                Aquí se esta haciendo de este apartado, el cual permite crear nuevas props(propiedades), de tal
+                manera que, dentro de mi componente se esta definiendo una prop llamada 'text' (se puede especificar
+                que tipo de valor recibirá) y ya en nuestro renderizado le pasamos el valor de item. Ya que, en nuestro
+                componente estamos trabajando con esta prop: en este caso pasarle para nuestro item por la prop text
+                e renderizarlo en medio de nuestro li.
+
+                v-bind: Uso de variable dinámicas.
+            */
+            app.component("v-item", {
+                props: {
+                    text: String,
+                },
+                template:`
+                    <li><slot> {{ text }}</slot></li></li>
+                `
+            })
+
+            const vm = app.mount('#app');
+        </script>
+    </div>
+
+</body>
+
+<style>
+ 
+ body{
+    background-color: #202124;
+    color: azure;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+ }
+</style>
+</html>
