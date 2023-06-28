@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunication Father-Child</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <div id="app">
+        <script>
+            const app = Vue.createApp({
+
+                data() {
+                    return {
+                        items: [
+                            "one",
+                            "two",
+                            "three",
+                            "four",
+                            "five",
+                            "six",
+                        ]
+                    }
+                },
+                template:
+                `
+                <ul>
+                    <v-item 
+                        v-for="(item, i) in items" 
+                        v-bind:text="item"
+                        v-on:remove="remove(i)"
+                    />
+                </ul>
+                `,
+                methods: {
+                    remove(i) {
+                        const items = this.items.filter((el, index) => index !== i);
+                        this.items = items;
+                    }
+                },
+            });
+            /* 
+                Estamos haciendo uso de la directive v-on, la cual nos permite añadir
+                evento nativos de JS, en este caso sencillamente, @click es lo mismo que v-on:click="método"
+                Aquí estamos añadiendo un evento general.
+                    <v-item 
+                        v-for="(item, i) in items" 
+                        v-bind:text="item"
+                        v-on:click="remove(i)"
+                    />
+                Si nos percatamos, el evento lo recibe el elemento padre, ahora si queremos que lo reciba
+                el elemento hijo:
+                Lo tenemos que identificar con un $emit, el cual nos llevará a escribirlo solo como 
+                un evento, pero en ese momento será llamado en la v-on:remove="remove(i)" Y en nuestro
+                hijo, lo tenemos creado como rm, en su propiedad v-on, de tal forma que así nos queda:
+                comunicación de un hijo con su padre, a partir de uno custom:
+                father:
+                   <ul>
+                    <v-item 
+                        v-for="(item, i) in items" 
+                        v-bind:text="item"
+                        v-on:remove="remove(i)"
+                    />
+                </ul>
+            
+                child:
+                     app.component("v-item", {
+                    props: {
+                        text: String,
+                    },
+                    methods: {
+                        rm(){
+                            this.$emit("remove");
+                        }
+                    },
+                    template:`
+                        <li v-on:click="rm">
+                            <slot>{{ text }}</slot>
+                        </li>
+                `
+            })
+
+            */
+            app.component("v-item", {
+                props: {
+                    text: String,
+                },
+                methods: {
+                    rm(){
+                        this.$emit("remove");
+                    }
+                },
+                template:`
+                    <li v-on:click="rm">
+                        <slot>{{ text }}</slot>
+                    </li>
+                `
+            })
+
+            const vm = app.mount('#app');
+        </script>
+    </div>
+
+</body>
+
+<style>
+ 
+ body{
+    background-color: #202124;
+    color: azure;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+ }
+</style>
+</html>
