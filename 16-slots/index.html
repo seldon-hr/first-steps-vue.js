@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V-slots</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <div id="app">
+        <script>
+            const app = Vue.createApp({
+                template:
+                `
+                <div>
+                    <v-layout>
+                        <template v-slot:header >
+                            <button>A button with a slot</button>
+                        </template>
+                        <template v-slot:content >
+                            <p>A paragraph in the second slot</p>
+                        </template>
+                    </v-layout>
+                </div>
+                `
+            });
+            /* 
+                Dentro del uso de los 'slots', hacemos uso de su propiedad name, así ya los tenemos definidos
+                y desde el template se puede inyectar el código de diseño.
+            */
+            app.component("v-layout", {
+                template:`
+                    <header>
+                        <slot name="header"></slot>
+                    </header>
+                    <div>
+                        <slot name="content"></slot>
+                    </div>
+                `
+            })
+
+            const vm = app.mount('#app');
+        </script>
+    </div>
+
+</body>
+</html>
