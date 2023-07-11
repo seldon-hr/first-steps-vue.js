@@ -19,6 +19,7 @@
             },
             watch: {
                 open(status){
+                    console.log(status);
                     status == true ? this.text="The door was opened" : this.text="The door was closed";
                 }
                 /* ? Here with the watchers could set a new value for a propertie was defined previously in the data.
@@ -39,11 +40,11 @@
                 
                 */
             },
-            computed: {
+          /*   computed: {
                 label() {
                     return this.open ? "Close" : "Open";
                 }
-            },
+            }, */
             template: `
                 <div> {{ text }}</div>
                 <br>
