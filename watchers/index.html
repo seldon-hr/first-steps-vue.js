@@ -9,7 +9,42 @@
 <body>
     <script src="https://unpkg.com/vue@next"></script>
     <div id="app"></div>
+
+    <div>
+        <ul class="container">
+            <li class="item" draggable="true">Somthing</li>
+            <li class="item" draggable="true">A change</li>
+            <li class="item" draggable="true">An idea </li>
+            <li class="item" draggable="true">An aspect</li>
+            <li class="item" draggable="true">A superAspect</li>
+        </ul>
+    </div>
     <script>
+       const container = document.querySelector(".container");
+
+        container.addEventListener("dragstart", function(event) {
+        event.dataTransfer.setData("text/html", event.target.innerHTML);
+        event.dataTransfer.setData("index", event.target.index);
+        });
+
+        container.addEventListener("drop", function(event) {
+        const target = event.target;
+        const data = event.dataTransfer.getData("text/html");
+        const index = event.dataTransfer.getData("index");
+
+        target.innerHTML = data;
+
+        const listItems = container.querySelectorAll(".item");
+        for (let i = 0; i < listItems.length; i++) {
+            listItems[i].setAttribute("data-index", i);
+        }
+
+        listItems.sort((a, b) => a.getAttribute("data-index") - b.getAttribute("data-index"));
+        });
+
+
+
+
         const vm = Vue.createApp({
             data() {
                 return {
@@ -52,5 +87,56 @@
             `
         }).mount("#app");
     </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .container {
+            cursor: move;
+            width: 800px;
+            height: 400px;
+            background: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        li{
+            list-style-type: none; 
+            padding: 0;
+            margin: 0;
+        }
+
+        .item {
+            width: inherit;
+            text-align: center;
+            font-size: 18px;
+            padding: 10px;
+            border: 2px white solid;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .item.dragging {
+            opacity: 0.5;
+            background-color: #ccc;
+        }
+
+        .item.dropped {
+            opacity: 1;
+            background-color: inherit;
+        }
+
+
+
+        .container .item:not(.dragging) {
+            opacity: 0.7;
+            background-color: #eee;
+            }
+    </style>
 </body>
 </html>
