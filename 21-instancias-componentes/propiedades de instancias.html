@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instancias de componente</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@next"></script>
+    <div id="app">
+        <script>
+             const app = Vue.createApp({
+            name: "example",
+            data() {
+                return {
+                    text: "Howdy",
+                };
+            },
+            props:{
+                name: { type: String, default: "Something to console.",},
+                value: { type: Boolean, default: false, },
+            },
+            template: `
+            <v-container>
+            <v-btn ref=elemento :label=text></v-btn>
+            <p>something</p>
+           </v-container>`
+            
+            });
+
+            app.component('v-btn', {
+                props: ['label'],
+                template: `<button> {{ label }}</button>`,
+            });
+
+       
+       
+
+        const vm =  app.mount("#app");
+        console.log(vm.$root);
+        console.log(vm);
+        console.log(vm.$el);
+        console.log(vm.$refs.elemento);
+        
+        /* Por medio de $props, podemos acceder a las propiedades dl componente.
+           Aquí, estamos accediendo a la prop 'value', y esta nos imprimirá 'false', debido 
+           a que es el valor default, de lo contrario sin valor, nos imprimiría undefined. 
+        */
+        console.log(vm.$props.value);
+
+        vm.$el = `new concept`;
+
+        </script>
+    </div>
+</body>
+
+<style>
+   /*  body {
+        background-color: #202124;
+        color: azure;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    } */
+</style>
+</html>
