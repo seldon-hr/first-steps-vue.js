@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Resultado de la función</title>
+    </head>
+    <body>
+        <div id="result"></div>
+
+        <script>
+
+                async function connectToAPI(url) {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data;
+                }
+
+                let resultElement = document.getElementById("result");
+                connectToAPI("https://jsonplaceholder.typicode.com/todos?_limit=10").then(results => {
+                    const table = document.createElement("table");
+                    const headers = Object.keys(results[0]);
+                    const headerRow = document.createElement("tr");
+                    headers.forEach(header => {
+                        const th = document.createElement("th");
+                        th.textContent = header;
+                        headerRow.appendChild(th);
+                    });
+                    table.appendChild(headerRow);
+                    results.forEach(result => {
+                        const dataRow = document.createElement("tr");
+                        headers.forEach(header => {
+                            const td = document.createElement("td");
+                            td.textContent = result[header];
+                            dataRow.appendChild(td);
+                        });
+                        table.appendChild(dataRow);
+                    });
+                    resultElement.appendChild(table);
+                    table.style.borderCollapse = "collapse";
+                    table.style.width = "100%";
+                    table.style.border = "1px solid black";
+                    const ths = table.querySelectorAll("th");
+                    ths.forEach(th => {
+                        th.style.padding = "10px";
+                        th.style.border = "1px solid black";
+                    });
+                    const tds = table.querySelectorAll("td");
+                    tds.forEach(td => {
+                        td.style.padding = "10px";
+                        td.style.border = "1px solid black";
+                    });
+                });
+        </script>
+    </body>
+</html>
+        
+
+    </script>
+  </body>
+</html>
